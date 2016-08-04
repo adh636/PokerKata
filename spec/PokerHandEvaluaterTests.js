@@ -10,10 +10,15 @@ System.register(["../src/PokerHandEvaluator"], function(exports_1, context_1) {
         execute: function() {
             describe("PokerHandEvaluator", function () {
                 describe("high card wins", function () {
-                    it("should show 9 high beating 8 high", function () {
+                    it("should show black win with 9 high beating 8 high", function () {
                         var dealer = new PokerHandEvaluator_1.PokerHandEvaluator();
-                        var hands = "Black: 2H 3D 5S 9C 6D  White: 2C 3H 4S 8C 5C";
-                        expect(dealer.announceWinner(hands)).toEqual("Black wins");
+                        var hands = "Black: 2H 3D 5S 9C 6D White: 2C 3H 4S 8C 5C";
+                        expect(dealer.announceWinner(hands)).toEqual("Black:");
+                    });
+                    it("should show white win with 9 high beating 8 high", function () {
+                        var dealer = new PokerHandEvaluator_1.PokerHandEvaluator();
+                        var hands = "Black: 2H 3D 5S 8C 6D White: 2C 3H 4S 9C 5C";
+                        expect(dealer.announceWinner(hands)).toEqual("White:");
                     });
                 });
             });
