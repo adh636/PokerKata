@@ -20,7 +20,18 @@ System.register(["../src/PokerHandEvaluator"], function(exports_1, context_1) {
                         var hands = "Black: 2H 3D 5S 8C 6D White: 2C 3H 4S 9C 5C";
                         expect(dealer.announceWinner(hands)).toEqual("White:");
                     });
+                    it("should show a tie when all cards have same value", function () {
+                        var dealer = new PokerHandEvaluator_1.PokerHandEvaluator();
+                        var hands = "Black: 2H 3D 5S 8C 6D White: 2C 6H 5D 8S 3C";
+                        expect(dealer.announceWinner(hands)).toEqual("Tie");
+                    });
+                    it("should show black win with top 4 cards the same", function () {
+                        var dealer = new PokerHandEvaluator_1.PokerHandEvaluator();
+                        var hands = "Black: 7H 3D 5S 8C 6D White: 2C 6H 5D 8S 7C";
+                        expect(dealer.announceWinner(hands)).toEqual("Black:");
+                    });
                 });
+                describe("");
             });
         }
     }

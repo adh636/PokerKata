@@ -1,63 +1,92 @@
-export class PokerHandEvaluator {
-// Black: 2H 3D 5S 9C 6D  White: 2C 3H 4S 8C 5C
-    hands: Hand[] = [];
-
-    announceWinner(hands: string): string {
-        this.setHands(hands);
-        return this.compareCardValues();
-    }
-
-    setHands(hands: string): void {
-        let handArr = hands.split(" ");
-        this.hands[0]= new Hand(handArr.slice(0, 6));
-        this.hands[1] = new Hand(handArr.slice(6));
-    }
-
-    compareCardValues(): string {
-        for (let i = 0; i < 5; i++) {
-            if (this.hands[0].cardValues[i] > this.hands[1].cardValues[i]) {
-                return this.hands[0].playerName;
-            }
-            if (this.hands[1].cardValues[i] > this.hands[0].cardValues[i]) {
-                return this.hands[1].playerName;
-            }
-        }
-        return "Tie";
-    }
-}
-
-export class Hand {
-    playerName: string;
-    cardValues: number[] = [];
+export class Card {
+    name: string;
+    value: number;
     cardValueMap: any = {
-        "2": 2,
-        "3": 3,
-        "4": 4,
-        "5": 5,
-        "6": 6,
-        "7": 7,
-        "8": 8,
-        "9": 9,
         "T": 10,
         "J": 11,
         "Q": 12,
         "K": 13,
         "A": 14
     };
-
-    constructor(hand: string[]) {
-        this.setCards(hand);
+    
+    constructor(card: string) {
+        this.setCard(card);
     }
 
-    setCards(hand: string[]): void {
-        this.playerName = hand[0];
-        for (let i = 1; i < hand.length; i++) {
-            this.cardValues[i-1] = this.cardValueMap[hand[i][0]];
+    private setCard(card: string) {
+        this.name = card;
+        if (parseInt(card[0])) {
+            this.value = parseInt(card[0]);
         }
-        this.sortCards();
+        else {
+            this.value = this.cardValueMap[card[0]];
+        }
+    }
+}
+
+export class Hand {
+    cards: Card[] = [];
+    cardValues: number[] = [];
+    value: number;
+
+    constructor(hand: string) {
+        this.setValues(hand);
+    }
+    private setValues(hand: string) {
+        this.setCardValues(hand);
+        this.value = this.getHandValue();
     }
 
-    sortCards(): void {
-        this.cardValues.sort((a, b)=> b - a);
+    private setCardValues(hand:string) {
+        let handArr = hand.split(" ");
+        for (let i = 1; i < handArr.length; i++) {
+            this.cardValues.push(new Card(handArr[i]).value);
+        }
+        this.cardValues.sort((a, b) => b - a);
+    }
+
+    private getHandValue(): number {
+        if (this.isThreeOfAKind()) {
+            return 4;
+        }
+        if (this.isTwoPair()) {
+            return 3;
+        }
+        if (this.isPair()) {
+            return 2;
+        }
+        return 1;
+    }
+
+    private isPair(): boolean {
+        for (let i = 0; i < this.cardValues.length-1; i++) {
+            if (this.cardValues[i] === this.cardValues[i+1]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private isTwoPair() {
+        let pairCount = 0;
+        for (let i = 0; i < this.cardValues.length-1; i++) {
+            if (this.cardValues[i] === this.cardValues[i+1]) {
+                pairCount++;
+            }
+        }
+        if (pairCount === 2) {
+            return true;
+        }
+        return false;
+    }
+
+
+    private isThreeOfAKind() {
+        for (let i = 0; i < this.cardValues.length-2; i++) {
+            if (this.cardValues[i] === this.cardValues[i+1] && this.cardValues[i] === this.cardValues[i+2]) {
+                return true;
+            }
+        }
+        return false;
     }
 }
