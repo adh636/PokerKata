@@ -1,67 +1,109 @@
 System.register([], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var PokerHandEvaluator, Hand;
+    var Card, Hand;
     return {
         setters:[],
         execute: function() {
-            PokerHandEvaluator = (function () {
-                function PokerHandEvaluator() {
-                    // Black: 2H 3D 5S 9C 6D  White: 2C 3H 4S 8C 5C
-                    this.hands = [];
-                }
-                PokerHandEvaluator.prototype.announceWinner = function (hands) {
-                    this.setHands(hands);
-                    return this.compareCardValues();
-                };
-                PokerHandEvaluator.prototype.setHands = function (hands) {
-                    var handArr = hands.split(" ");
-                    this.hands[0] = new Hand(handArr.slice(0, 6));
-                    this.hands[1] = new Hand(handArr.slice(6));
-                };
-                PokerHandEvaluator.prototype.compareCardValues = function () {
-                    for (var i = 0; i < 5; i++) {
-                        if (this.hands[0].cardValues[i] > this.hands[1].cardValues[i]) {
-                            return this.hands[0].playerName;
-                        }
-                        if (this.hands[1].cardValues[i] > this.hands[0].cardValues[i]) {
-                            return this.hands[1].playerName;
-                        }
-                    }
-                    return "Tie";
-                };
-                return PokerHandEvaluator;
-            }());
-            exports_1("PokerHandEvaluator", PokerHandEvaluator);
-            Hand = (function () {
-                function Hand(hand) {
-                    this.cardValues = [];
+            Card = (function () {
+                function Card(card) {
                     this.cardValueMap = {
-                        "2": 2,
-                        "3": 3,
-                        "4": 4,
-                        "5": 5,
-                        "6": 6,
-                        "7": 7,
-                        "8": 8,
-                        "9": 9,
                         "T": 10,
                         "J": 11,
                         "Q": 12,
                         "K": 13,
                         "A": 14
                     };
-                    this.setCards(hand);
+                    this.setCard(card);
                 }
-                Hand.prototype.setCards = function (hand) {
-                    this.playerName = hand[0];
-                    for (var i = 1; i < hand.length; i++) {
-                        this.cardValues[i - 1] = this.cardValueMap[hand[i][0]];
+                Card.prototype.setCard = function (card) {
+                    this.name = card;
+                    if (parseInt(card[0])) {
+                        this.value = parseInt(card[0]);
                     }
-                    this.sortCards();
+                    else {
+                        this.value = this.cardValueMap[card[0]];
+                    }
                 };
-                Hand.prototype.sortCards = function () {
+                return Card;
+            }());
+            exports_1("Card", Card);
+            Hand = (function () {
+                function Hand(hand) {
+                    this.cards = [];
+                    this.cardValues = [];
+                    this.flush = true;
+                    this.setValues(hand);
+                }
+                Hand.prototype.setValues = function (hand) {
+                    this.setCardValues(hand);
+                    this.handValue = this.getHandValue();
+                };
+                Hand.prototype.setCardValues = function (hand) {
+                    var handArr = hand.split(" ");
+                    var suit = handArr[1][1];
+                    for (var i = 1; i < handArr.length; i++) {
+                        this.cardValues.push(new Card(handArr[i]).value);
+                        this.flush = suit === handArr[i][1];
+                    }
                     this.cardValues.sort(function (a, b) { return b - a; });
+                };
+                Hand.prototype.getHandValue = function () {
+                    if (this.flush) {
+                        return 6;
+                    }
+                    if (this.isStraight()) {
+                        return 5;
+                    }
+                    if (this.isThreeOfAKind()) {
+                        return 4;
+                    }
+                    if (this.isTwoPair()) {
+                        return 3;
+                    }
+                    if (this.isPair()) {
+                        return 2;
+                    }
+                    return 1;
+                };
+                Hand.prototype.isPair = function () {
+                    for (var i = 0; i < this.cardValues.length - 1; i++) {
+                        if (this.cardValues[i] === this.cardValues[i + 1]) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                Hand.prototype.isTwoPair = function () {
+                    var pairCount = 0;
+                    for (var i = 0; i < this.cardValues.length - 1; i++) {
+                        if (this.cardValues[i] === this.cardValues[i + 1]) {
+                            pairCount++;
+                        }
+                    }
+                    if (pairCount === 2) {
+                        return true;
+                    }
+                    return false;
+                };
+                Hand.prototype.isThreeOfAKind = function () {
+                    for (var i = 0; i < this.cardValues.length - 2; i++) {
+                        if (this.cardValues[i] === this.cardValues[i + 1] && this.cardValues[i] === this.cardValues[i + 2]) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                Hand.prototype.isStraight = function () {
+                    for (var i = 0; i < this.cardValues.length - 1; i++) {
+                        if (this.cardValues[i] !== this.cardValues[i + 1] + 1) {
+                            return false;
+                        }
+                    }
+                    return true;
+                };
+                Hand.prototype.isFlush = function () {
+                    return this.flush;
                 };
                 return Hand;
             }());

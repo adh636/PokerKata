@@ -27,25 +27,34 @@ export class Card {
 export class Hand {
     cards: Card[] = [];
     cardValues: number[] = [];
-    value: number;
+    handValue: number;
+    flush: boolean = true;
 
     constructor(hand: string) {
         this.setValues(hand);
     }
     private setValues(hand: string) {
         this.setCardValues(hand);
-        this.value = this.getHandValue();
+        this.handValue = this.getHandValue();
     }
 
     private setCardValues(hand:string) {
         let handArr = hand.split(" ");
+        let suit: string = handArr[1][1];
         for (let i = 1; i < handArr.length; i++) {
             this.cardValues.push(new Card(handArr[i]).value);
+            this.flush = suit === handArr[i][1];
         }
         this.cardValues.sort((a, b) => b - a);
     }
 
     private getHandValue(): number {
+        if (this.flush) {
+            return 6;
+        }
+        if (this.isStraight()) {
+            return 5;
+        }
         if (this.isThreeOfAKind()) {
             return 4;
         }
@@ -88,5 +97,18 @@ export class Hand {
             }
         }
         return false;
+    }
+
+    private isStraight() {
+        for (let i = 0; i < this.cardValues.length-1; i++) {
+            if (this.cardValues[i] !== this.cardValues[i+1] + 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private isFlush(): boolean {
+        return this.flush;
     }
 }
