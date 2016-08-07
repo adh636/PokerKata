@@ -44,26 +44,23 @@ System.register([], function(exports_1, context_1) {
                     var suit = handArr[1][1];
                     for (var i = 1; i < handArr.length; i++) {
                         this.cardValues.push(new Card(handArr[i]).value);
-                        this.flush = suit === handArr[i][1];
+                        this.flush = (suit === handArr[i][1]);
                     }
                     this.cardValues.sort(function (a, b) { return b - a; });
                 };
                 Hand.prototype.getHandValue = function () {
-                    if (this.flush) {
+                    if (this.isFullHouse())
+                        return 7;
+                    if (this.flush)
                         return 6;
-                    }
-                    if (this.isStraight()) {
+                    if (this.isStraight())
                         return 5;
-                    }
-                    if (this.isThreeOfAKind()) {
+                    if (this.isThreeOfAKind())
                         return 4;
-                    }
-                    if (this.isTwoPair()) {
+                    if (this.isTwoPair())
                         return 3;
-                    }
-                    if (this.isPair()) {
+                    if (this.isPair())
                         return 2;
-                    }
                     return 1;
                 };
                 Hand.prototype.isPair = function () {
@@ -102,8 +99,18 @@ System.register([], function(exports_1, context_1) {
                     }
                     return true;
                 };
-                Hand.prototype.isFlush = function () {
-                    return this.flush;
+                Hand.prototype.isFullHouse = function () {
+                    for (var i = 0; i < this.cardValues.length - 2; i++) {
+                        if (this.cardValues[i] === this.cardValues[i + 1] && this.cardValues[i] === this.cardValues[i + 2]) {
+                            if (i === 0 && this.cardValues[3] === this.cardValues[4]) {
+                                return true;
+                            }
+                            if (i === 2 && this.cardValues[0] === this.cardValues[1]) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
                 };
                 return Hand;
             }());

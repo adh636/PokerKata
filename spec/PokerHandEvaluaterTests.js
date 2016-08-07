@@ -57,6 +57,11 @@ System.register(["../src/PokerHandEvaluator"], function(exports_1, context_1) {
                         var handValue = flush.handValue;
                         expect(handValue).toEqual(6);
                     });
+                    it("should value full house as 7", function () {
+                        var fullHouse = new PokerHandEvaluator_1.Hand("Black: 2C 2H 4C 2S 4S");
+                        var handValue = fullHouse.handValue;
+                        expect(handValue).toEqual(7);
+                    });
                 });
             });
         }

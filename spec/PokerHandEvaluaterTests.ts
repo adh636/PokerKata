@@ -51,5 +51,10 @@ describe("PokerHandEvaluator", () => {
             let handValue: number = flush.handValue;
             expect(handValue).toEqual(6);
         });
+        it("should value full house as 7", () => {
+            let fullHouse: Hand = new Hand("Black: 2C 2H 4C 2S 4S");
+            let handValue: number = fullHouse.handValue;
+            expect(handValue).toEqual(7);
+        });
     });
 });

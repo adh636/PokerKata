@@ -43,27 +43,18 @@ export class Hand {
         let suit: string = handArr[1][1];
         for (let i = 1; i < handArr.length; i++) {
             this.cardValues.push(new Card(handArr[i]).value);
-            this.flush = suit === handArr[i][1];
+            this.flush = (suit === handArr[i][1]);
         }
         this.cardValues.sort((a, b) => b - a);
     }
 
     private getHandValue(): number {
-        if (this.flush) {
-            return 6;
-        }
-        if (this.isStraight()) {
-            return 5;
-        }
-        if (this.isThreeOfAKind()) {
-            return 4;
-        }
-        if (this.isTwoPair()) {
-            return 3;
-        }
-        if (this.isPair()) {
-            return 2;
-        }
+        if (this.isFullHouse()) return 7;
+        if (this.flush) return 6;
+        if (this.isStraight()) return 5;
+        if (this.isThreeOfAKind()) return 4;
+        if (this.isTwoPair()) return 3;
+        if (this.isPair()) return 2;
         return 1;
     }
 
@@ -108,7 +99,17 @@ export class Hand {
         return true;
     }
 
-    private isFlush(): boolean {
-        return this.flush;
+    private isFullHouse() {
+        for (let i = 0; i < this.cardValues.length-2; i++) {
+            if (this.cardValues[i] === this.cardValues[i+1] && this.cardValues[i] === this.cardValues[i+2]) {
+                if (i === 0 && this.cardValues[3] === this.cardValues[4]) {
+                    return true;
+                }
+                if (i === 2 && this.cardValues[0] === this.cardValues[1]) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
