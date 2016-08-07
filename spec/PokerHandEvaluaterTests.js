@@ -62,6 +62,11 @@ System.register(["../src/PokerHandEvaluator"], function(exports_1, context_1) {
                         var handValue = fullHouse.handValue;
                         expect(handValue).toEqual(7);
                     });
+                    it("should value four of a kind as 8", function () {
+                        var fourOfAKind = new PokerHandEvaluator_1.Hand("Black: 2C 2H 2D 2S 4S");
+                        var handValue = fourOfAKind.handValue;
+                        expect(handValue).toEqual(8);
+                    });
                 });
             });
         }

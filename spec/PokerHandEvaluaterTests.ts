@@ -56,5 +56,10 @@ describe("PokerHandEvaluator", () => {
             let handValue: number = fullHouse.handValue;
             expect(handValue).toEqual(7);
         });
+        it("should value four of a kind as 8", () => {
+            let fourOfAKind: Hand = new Hand("Black: 2C 2H 2D 2S 4S");
+            let handValue: number = fourOfAKind.handValue;
+            expect(handValue).toEqual(8);
+        });
     });
 });

@@ -49,6 +49,7 @@ export class Hand {
     }
 
     private getHandValue(): number {
+        if (this.isFourOfAKind()) return 8;
         if (this.isFullHouse()) return 7;
         if (this.flush) return 6;
         if (this.isStraight()) return 5;
@@ -108,6 +109,16 @@ export class Hand {
                 if (i === 2 && this.cardValues[0] === this.cardValues[1]) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private isFourOfAKind() {
+        for (let i = 0; i < this.cardValues.length-3; i++) {
+            if (this.cardValues[i] === this.cardValues[i+1] && this.cardValues[i] === this.cardValues[i+2]
+                && this.cardValues[i] === this.cardValues[i+3]) {
+                return true;
             }
         }
         return false;

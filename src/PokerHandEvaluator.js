@@ -49,6 +49,8 @@ System.register([], function(exports_1, context_1) {
                     this.cardValues.sort(function (a, b) { return b - a; });
                 };
                 Hand.prototype.getHandValue = function () {
+                    if (this.isFourOfAKind())
+                        return 8;
                     if (this.isFullHouse())
                         return 7;
                     if (this.flush)
@@ -108,6 +110,15 @@ System.register([], function(exports_1, context_1) {
                             if (i === 2 && this.cardValues[0] === this.cardValues[1]) {
                                 return true;
                             }
+                        }
+                    }
+                    return false;
+                };
+                Hand.prototype.isFourOfAKind = function () {
+                    for (var i = 0; i < this.cardValues.length - 3; i++) {
+                        if (this.cardValues[i] === this.cardValues[i + 1] && this.cardValues[i] === this.cardValues[i + 2]
+                            && this.cardValues[i] === this.cardValues[i + 3]) {
+                            return true;
                         }
                     }
                     return false;
