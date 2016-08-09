@@ -49,6 +49,8 @@ System.register([], function(exports_1, context_1) {
                     this.cardValues.sort(function (a, b) { return b - a; });
                 };
                 Hand.prototype.getHandValue = function () {
+                    if (this.isStraightFlush())
+                        return 9;
                     if (this.isFourOfAKind())
                         return 8;
                     if (this.isFullHouse())
@@ -121,6 +123,11 @@ System.register([], function(exports_1, context_1) {
                             return true;
                         }
                     }
+                    return false;
+                };
+                Hand.prototype.isStraightFlush = function () {
+                    if (this.flush && this.isStraight())
+                        return true;
                     return false;
                 };
                 return Hand;

@@ -61,5 +61,10 @@ describe("PokerHandEvaluator", () => {
             let handValue: number = fourOfAKind.handValue;
             expect(handValue).toEqual(8);
         });
+        it("should value straight flush as 9", () => {
+            let straightFlush: Hand = new Hand("Black: 2C 3C 4C 5C 6C");
+            let handValue: number = straightFlush.handValue;
+            expect(handValue).toEqual(9);
+        });
     });
 });

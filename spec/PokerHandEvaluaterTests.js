@@ -67,6 +67,11 @@ System.register(["../src/PokerHandEvaluator"], function(exports_1, context_1) {
                         var handValue = fourOfAKind.handValue;
                         expect(handValue).toEqual(8);
                     });
+                    it("should value straight flush as 9", function () {
+                        var straightFlush = new PokerHandEvaluator_1.Hand("Black: 2C 3C 4C 5C 6C");
+                        var handValue = straightFlush.handValue;
+                        expect(handValue).toEqual(9);
+                    });
                 });
             });
         }

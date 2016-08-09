@@ -49,6 +49,7 @@ export class Hand {
     }
 
     private getHandValue(): number {
+        if (this.isStraightFlush()) return 9;
         if (this.isFourOfAKind()) return 8;
         if (this.isFullHouse()) return 7;
         if (this.flush) return 6;
@@ -121,6 +122,11 @@ export class Hand {
                 return true;
             }
         }
+        return false;
+    }
+
+    private isStraightFlush() {
+        if (this.flush && this.isStraight()) return true;
         return false;
     }
 }
