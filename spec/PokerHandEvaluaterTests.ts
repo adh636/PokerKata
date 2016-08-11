@@ -1,4 +1,4 @@
-import {Card, Hand} from "../src/PokerHandEvaluator";
+import {Card, Hand, Dealer} from "../src/PokerHandEvaluator";
 
 describe("PokerHandEvaluator", () => {
     
@@ -15,7 +15,7 @@ describe("PokerHandEvaluator", () => {
         });
     });
     
-    describe("high value", () => {
+    describe("hand value", () => {
         it("should get high card", () => {
             let hand: Hand = new Hand("Black: 4C 3C 2C 5C 7H");
             let highCard: number = hand.cardValues[0];
@@ -65,6 +65,15 @@ describe("PokerHandEvaluator", () => {
             let straightFlush: Hand = new Hand("Black: 2C 3C 4C 5C 6C");
             let handValue: number = straightFlush.handValue;
             expect(handValue).toEqual(9);
+        });
+    });
+
+    describe("best hand", () => {
+        it("should have hand with high card win", () => {
+            let blackHand: Hand = new Hand("Black: 4C 3C 2C 5C 7H");
+            let whiteHand: Hand = new Hand("White: 4C 3C 2C 5C 8H");
+            let dealer: Dealer = new Dealer();
+            expect(dealer.getWinner(blackHand, whiteHand)).toEqual("White");
         });
     });
 });

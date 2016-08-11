@@ -1,3 +1,16 @@
+export class Dealer {
+
+    getWinner(blackHand:Hand, whiteHand:Hand) {
+        if (blackHand.handValue > whiteHand.handValue) return blackHand.playerName;
+        if (whiteHand.handValue > blackHand.handValue) return whiteHand.playerName;
+        for (let i = 0; i < 5; i++) {
+            if (blackHand.cardValues[i] > whiteHand.cardValues[i]) return blackHand.playerName;
+            if (whiteHand.cardValues[i] > blackHand.cardValues[i]) return whiteHand.playerName;
+        }
+        return "Tie";
+    }
+}
+
 export class Card {
     name: string;
     value: number;
@@ -29,6 +42,7 @@ export class Hand {
     cardValues: number[] = [];
     handValue: number;
     flush: boolean = true;
+    playerName: string;
 
     constructor(hand: string) {
         this.setValues(hand);
@@ -40,6 +54,7 @@ export class Hand {
 
     private setCardValues(hand:string) {
         let handArr = hand.split(" ");
+        this.playerName = handArr[0].substring(0, handArr[0].length-1);
         let suit: string = handArr[1][1];
         for (let i = 1; i < handArr.length; i++) {
             this.cardValues.push(new Card(handArr[i]).value);

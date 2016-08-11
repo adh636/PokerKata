@@ -1,10 +1,29 @@
 System.register([], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var Card, Hand;
+    var Dealer, Card, Hand;
     return {
         setters:[],
         execute: function() {
+            Dealer = (function () {
+                function Dealer() {
+                }
+                Dealer.prototype.getWinner = function (blackHand, whiteHand) {
+                    if (blackHand.handValue > whiteHand.handValue)
+                        return blackHand.playerName;
+                    if (whiteHand.handValue > blackHand.handValue)
+                        return whiteHand.playerName;
+                    for (var i = 0; i < 5; i++) {
+                        if (blackHand.cardValues[i] > whiteHand.cardValues[i])
+                            return blackHand.playerName;
+                        if (whiteHand.cardValues[i] > blackHand.cardValues[i])
+                            return whiteHand.playerName;
+                    }
+                    return "Tie";
+                };
+                return Dealer;
+            }());
+            exports_1("Dealer", Dealer);
             Card = (function () {
                 function Card(card) {
                     this.cardValueMap = {
@@ -41,6 +60,7 @@ System.register([], function(exports_1, context_1) {
                 };
                 Hand.prototype.setCardValues = function (hand) {
                     var handArr = hand.split(" ");
+                    this.playerName = handArr[0].substring(0, handArr[0].length - 1);
                     var suit = handArr[1][1];
                     for (var i = 1; i < handArr.length; i++) {
                         this.cardValues.push(new Card(handArr[i]).value);

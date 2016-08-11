@@ -21,7 +21,7 @@ System.register(["../src/PokerHandEvaluator"], function(exports_1, context_1) {
                         expect(ten.value > nine.value).toBeTruthy();
                     });
                 });
-                describe("high value", function () {
+                describe("hand value", function () {
                     it("should get high card", function () {
                         var hand = new PokerHandEvaluator_1.Hand("Black: 4C 3C 2C 5C 7H");
                         var highCard = hand.cardValues[0];
@@ -71,6 +71,19 @@ System.register(["../src/PokerHandEvaluator"], function(exports_1, context_1) {
                         var straightFlush = new PokerHandEvaluator_1.Hand("Black: 2C 3C 4C 5C 6C");
                         var handValue = straightFlush.handValue;
                         expect(handValue).toEqual(9);
+                    });
+                });
+                describe("best hand", function () {
+                    it("should have hand with high card win", function () {
+                        var blackHand = new PokerHandEvaluator_1.Hand("Black: 4C 3C 2C 5C 7H");
+                        var whiteHand = new PokerHandEvaluator_1.Hand("White: 4C 3C 2C 5C 8H");
+                        var dealer = new PokerHandEvaluator_1.Dealer();
+                        expect(dealer.getWinner(blackHand, whiteHand)).toEqual("White");
+                    });
+                    it("should have T beat 9", function () {
+                        var ten = new PokerHandEvaluator_1.Card("TC");
+                        var nine = new PokerHandEvaluator_1.Card("9C");
+                        expect(ten.value > nine.value).toBeTruthy();
                     });
                 });
             });
