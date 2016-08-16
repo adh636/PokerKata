@@ -52,6 +52,22 @@ System.register([], function(exports_1, context_1) {
                     this.cards = [];
                     this.cardValues = [];
                     this.flush = true;
+                    // handValueMap: any = [
+                    //     [this.isStraightFlush(), 9],
+                    //     [this.isFourOfAKind(), 8],
+                    //     [this.isFullHouse(), 7],
+                    //     [this.isFlush(), 6],
+                    //     [this.isStraight(), 5],
+                    //     [this.isThreeOfAKind(), 4],
+                    //     [this.isTwoPair(), 3],
+                    //     [this.isPair(), 2]
+                    // ];
+                    this.func = this.isStraightFlush();
+                    this.isStraightFlush = function () {
+                        if (this.flush && this.isStraight())
+                            return true;
+                        return false;
+                    };
                     this.setValues(hand);
                 }
                 Hand.prototype.setValues = function (hand) {
@@ -69,6 +85,11 @@ System.register([], function(exports_1, context_1) {
                     this.cardValues.sort(function (a, b) { return b - a; });
                 };
                 Hand.prototype.getHandValue = function () {
+                    // for (let hand of this.handValueMap) {
+                    //     if (hand[0]) {
+                    //         return hand[1];
+                    //     }
+                    // }
                     if (this.isStraightFlush())
                         return 9;
                     if (this.isFourOfAKind())
@@ -145,10 +166,8 @@ System.register([], function(exports_1, context_1) {
                     }
                     return false;
                 };
-                Hand.prototype.isStraightFlush = function () {
-                    if (this.flush && this.isStraight())
-                        return true;
-                    return false;
+                Hand.prototype.isFlush = function () {
+                    return this.flush;
                 };
                 return Hand;
             }());

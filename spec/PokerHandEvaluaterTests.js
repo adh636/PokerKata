@@ -80,11 +80,6 @@ System.register(["../src/PokerHandEvaluator"], function(exports_1, context_1) {
                         var dealer = new PokerHandEvaluator_1.Dealer();
                         expect(dealer.getWinner(blackHand, whiteHand)).toEqual("White");
                     });
-                    it("should have T beat 9", function () {
-                        var ten = new PokerHandEvaluator_1.Card("TC");
-                        var nine = new PokerHandEvaluator_1.Card("9C");
-                        expect(ten.value > nine.value).toBeTruthy();
-                    });
                 });
             });
         }

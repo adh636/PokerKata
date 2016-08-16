@@ -43,6 +43,18 @@ export class Hand {
     handValue: number;
     flush: boolean = true;
     playerName: string;
+    // handValueMap: any = [
+    //     [this.isStraightFlush(), 9],
+    //     [this.isFourOfAKind(), 8],
+    //     [this.isFullHouse(), 7],
+    //     [this.isFlush(), 6],
+    //     [this.isStraight(), 5],
+    //     [this.isThreeOfAKind(), 4],
+    //     [this.isTwoPair(), 3],
+    //     [this.isPair(), 2]
+    // ];
+
+    func: any = this.isStraightFlush();
 
     constructor(hand: string) {
         this.setValues(hand);
@@ -64,6 +76,13 @@ export class Hand {
     }
 
     private getHandValue(): number {
+
+        // for (let hand of this.handValueMap) {
+        //     if (hand[0]) {
+        //         return hand[1];
+        //     }
+        // }
+
         if (this.isStraightFlush()) return 9;
         if (this.isFourOfAKind()) return 8;
         if (this.isFullHouse()) return 7;
@@ -140,8 +159,12 @@ export class Hand {
         return false;
     }
 
-    private isStraightFlush() {
+    private isStraightFlush = function() {
         if (this.flush && this.isStraight()) return true;
         return false;
+    }
+
+    private isFlush() {
+        return this.flush;
     }
 }
